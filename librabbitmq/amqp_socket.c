@@ -1207,6 +1207,7 @@ static amqp_rpc_reply_t amqp_login_inner(amqp_connection_state_t state,
                                          const struct timeval *timeout,
                                          amqp_sasl_method_enum sasl_method,
                                          va_list vl) {
+  
   int res;
   amqp_method_t method;
 
@@ -1442,12 +1443,22 @@ amqp_rpc_reply_t amqp_login(amqp_connection_state_t state, char const *vhost,
 
   va_start(vl, sasl_method);
 
-  ret = amqp_login_inner(state, vhost, channel_max, frame_max, heartbeat,
-                         &amqp_empty_table, state->handshake_timeout,
-                         sasl_method, vl);
+  ret = amqp_login_va(state, vhost, channel_max, frame_max, heartbeat, 
+                      sasl_method, vl);
 
   va_end(vl);
 
+  return ret;
+}
+
+amqp_rpc_reply_t amqp_login_va(amqp_connection_state_t state, char const *vhost,
+                            int channel_max, int frame_max, int heartbeat,
+                            amqp_sasl_method_enum sasl_method, va_list args) {
+  
+  amqp_rpc_reply_t ret = amqp_login_inner(state, vhost, channel_max, frame_max, heartbeat,
+                         &amqp_empty_table, state->handshake_timeout,
+                         sasl_method, args);
+  
   return ret;
 }
 

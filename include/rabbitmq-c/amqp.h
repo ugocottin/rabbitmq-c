@@ -54,6 +54,7 @@ typedef _W64 int ssize_t;
 
 /** \endcond */
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -118,7 +119,7 @@ AMQP_BEGIN_DECLS
  */
 
 #define AMQP_VERSION_MAJOR 0
-#define AMQP_VERSION_MINOR 12
+#define AMQP_VERSION_MINOR 13
 #define AMQP_VERSION_PATCH 0
 #define AMQP_VERSION_IS_RELEASE 0
 
@@ -1691,6 +1692,16 @@ amqp_rpc_reply_t AMQP_CALL amqp_login(amqp_connection_state_t state,
                                       char const *vhost, int channel_max,
                                       int frame_max, int heartbeat,
                                       amqp_sasl_method_enum sasl_method, ...);
+
+/**
+ * 
+*/
+AMQP_EXPORT
+amqp_rpc_reply_t AMQP_CALL amqp_login_va(amqp_connection_state_t state,
+                                      char const *vhost, int channel_max,
+                                      int frame_max, int heartbeat,
+                                      amqp_sasl_method_enum sasl_method, 
+                                      va_list args);
 
 /**
  * Login to the broker passing a properties table
